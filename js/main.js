@@ -32,6 +32,19 @@ var shuffle = function(deck){
   return deck;
 };
 
+function compareVal ( a ,b)
+{
+
+  if ( a == b)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
 
 //Creating a deck object
 var myDeck = new deck();
@@ -42,12 +55,52 @@ window.onload = function(){
   //Loop for all 52 cards in the deck
   for(var i = 0; i< myDeck.length; i++)
   {
+      var vals = [];
     div = document.createElement('div');
     div.className = 'card';
-    div.addEventListener('click', function(event){
+     var click = 0;
+    div.addEventListener('click', function(event,counter){
+       // for(var counter = 0; counter<= 1; counter++){
+        
+       // for(var counter= 0; counter<2;counter++){
+        vals[click] = this.querySelector(".number");
+    
+    if (vals.length == 3)
+    {
+      var result = compareVal(vals[0],vals[1])
+      if (result == true)
+      {
+        alert("won");
+      }
+      else {
+        alert ("try again");
+      }
+      vals =[];
+    }
+      
+    if(click<2)
+    {
+            click += 1;
       this.querySelector(".number").style.display = "block";
       this.querySelector(".suit").style.display = "block";
+     //   console.log(counter);
+        console.log(click);
+        
+    }
+    else
+        {   // reset block here..check it out
+            
+            document.body.removeChild(div);
+            div.innerHTML=" ";
+           
+          
+        }
+       
+   //     }
+                         
     });
+      
+ 
     var ascii_char;
     if(myDeck[i].suit =='Diamonds'){
       ascii_char = '&diams;';
@@ -56,9 +109,12 @@ window.onload = function(){
     {
       ascii_char = '&'+myDeck[i].suit.toLowerCase()+';';
     }
+     
     div.innerHTML ='<span class="number">'+ myDeck[i].name +'</span><span class="suit">' + ascii_char +'</span>';
     document.body.appendChild(div);
+    
   }
 };
 
 
+ 
