@@ -13,14 +13,18 @@ var deck = function(){
   this.suits = ['Hearts','Diamonds','Spades','Clubs'];
   var cards = [];
   //52 loops = 4 *13
-  for(var i = 0; i< this.suits.length;i++)
+  for (var k=0; k<2;k++)
   {
-    for(var j = 0; j< this.names.length;j++){
+  for(var i = 0; i< this.suits.length;i++)
+    {
+    for(var j = 0; j< this.names.length;j++)
+        {
       var cardObject = new card(j+1, this.names[j], this.suits[i]);
       cards.push(cardObject);
-    }
+        }
       
-  }
+    }
+}
   //deck of 52 card objects
   return cards;
 };
@@ -29,9 +33,12 @@ var player = function(name){
   this.name = name;
   this.score = 0;
 }
+var players =[];
 
-var player1 = new player("prath");
-var player2 = new player("Surya");
+players[0]= new player("prath");
+players[1] = new player("Surya");
+//players[0]= new player(prompt("Enter your player1 name?"));
+//players[1] = new player(prompt("Enter your player2 name?"));
 
 var shuffle = function(deck){
   for(var j, x, i = deck.length; i; j = parseInt(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x);
@@ -46,7 +53,8 @@ var myDeck = new deck();
 
 window.onload = function(){
 
-  //shuffle(myDeck);
+  shuffle(myDeck);
+    
   //Loop for all 52 cards in the deck
   for(var i = 0; i< myDeck.length; i++)
   {
@@ -64,14 +72,25 @@ window.onload = function(){
       else if(cardCounter==1){
         var currentCardValue = this.querySelector(".number").innerHTML;
         var previousCardValue = document.getElementsByClassName("show")[0].innerHTML;
-        if(currentCardValue==previousCardValue)
+          
+        var currentSuitValue = this.querySelector(".suit").innerHTML;
+        var previousSuitValue = document.getElementsByClassName("show")[0].innerHTML;
+          
+         // console.log(currentSuitValue);
+         //making changes above 
+        if(currentCardValue==previousCardValue && currentSuitValue==previousSuitValue)
         {
-          player1.score+=10;
-          console.log(player1.score);
-          //document.getElementById("player1").querySelector(".score").innerHTML=player1.score;
+          players[playerCounter].score+=10;
+          document.getElementById("players["+playerCounter+"]").querySelector(".score").innerHTML=players[playerCounter].score;
         }
         else
-          playerCounter++;
+        {
+            console.log("Mismatch")
+          playerCounter = 1-playerCounter;
+          document.getElementById("messages").innerHTML =players[playerCounter].name+", this is your turn "+playerCounter;
+          
+        }
+          
           
         cardCounter++;
       }
@@ -98,10 +117,13 @@ window.onload = function(){
   }
   
   scoreDiv = document.createElement('div');
-  scoreDiv.className ='score';
-  scoreDiv.innerHTML='<span id="player1">' + player1.name +'<br/>'+player1.score+'</span>'+'<span id="player2">' + player2.name +'<br/>'+player2.score+'</span>';
+  scoreDiv.className ='scores';
+  scoreDiv.innerHTML='<span id="players[0]" class="player">' + players[0].name +'<br/><b class="score">'+players[0].score+'</b></span>'+'<span class="player" id="players[1]">' + players[1].name +'<br/><b class="score">'+players[1].score+'</b></span>';
   document.body.appendChild(scoreDiv);
   
+  messageDiv = document.createElement('div');
+  messageDiv.setAttribute('id','messages');
+  messageDiv.innerHTML= players[0].name +', this is your tune';
+  document.body.appendChild(messageDiv);
+  
 };
-
-
